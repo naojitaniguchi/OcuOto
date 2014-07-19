@@ -10,11 +10,13 @@ public class SendOculusRotByOSC : MonoBehaviour {
 	public string TargetAddr;
 	public int OutGoingPort;
 	public int InComingPort;
+	public bool SendOSC = false ;
 	public GameObject targetCamera ;
+	public GameObject createTowerObj ;
 
 	#endregion
 	private Dictionary<string, ServerLog> servers;
-	
+	Vector3 sendValue ;
 	// Script initialization
 	void Start() {  
 		OSCHandler.Instance.Init(TargetAddr, OutGoingPort, InComingPort);
@@ -48,7 +50,7 @@ public class SendOculusRotByOSC : MonoBehaviour {
 		if ( targetCamera != null ){
 			Vector3 cameraEulerAngles = targetCamera.transform.rotation.eulerAngles ;
 
-			Vector3 sendValue ;
+			// Vector3 sendValue ;
 			sendValue.x = 0 ;
 			sendValue.y = 0 ;
 			sendValue.z = 0 ;
@@ -78,14 +80,17 @@ public class SendOculusRotByOSC : MonoBehaviour {
 				sendZ = true ;
 			}
 
-			if ( sendX ){
-				OSCHandler.Instance.SendMessageToClient("Max/Msp", "/oculus_x", sendValue.x);
-			}
+			CreateTower createTower = createTowerObj.GetComponent<CreateTower>();
+			createTower.setValueFromOculus( sendValue );
 
-			OSCHandler.Instance.SendMessageToClient("Max/Msp", "/oculus_y", sendValue.y);
-
-			if ( sendZ ){
-				OSCHandler.Instance.SendMessageToClient("Max/Msp", "/oculus_z", sendValue.z);
+			if ( SendOSC ){
+				if ( sendX ){
+					OSCHandler.Instance.SendMessageToClient("Max/Msp", "/oculus_x", sendValue.x);
+				}
+				OSCHandler.Instance.SendMessageToClient("Max/Msp", "/oculus_y", sendValue.y);
+				if ( sendZ ){
+					OSCHandler.Instance.SendMessageToClient("Max/Msp", "/oculus_z", sendValue.z);
+				}
 			}
 		}
 		
