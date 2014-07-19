@@ -45,6 +45,8 @@ public class CreateTower : MonoBehaviour {
 				Vector3 pos = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
 				pos.y = y ;
 				sphereArray[count] = (GameObject)Instantiate(prefab, pos, Quaternion.identity);
+				Color c = HSVColor.HSVToRGB( angle * Mathf.Rad2Deg , 1.0f, 1.0f );
+				sphereArray[count].renderer.material.color = c ;
 				count ++ ;
 			}
 			y += ySetp ;
@@ -68,6 +70,9 @@ public class CreateTower : MonoBehaviour {
 				Vector3 pos = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radAtY;
 				pos.y = y ;
 				sphereArray[count].transform.position = pos ;
+
+
+
 				count ++ ;
 			}
 			y += ySetp ;
